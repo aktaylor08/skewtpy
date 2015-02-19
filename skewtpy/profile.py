@@ -1,37 +1,26 @@
 __author__ = 'ataylor'
 
-
 from pandas import DataFrame
 import numpy as np
 import warnings
 
-from . import plotting
 
-class Sounding(DataFrame):
-
-    def __init__(self, data=None, index=None, columns=None, dtype=None, copy=False):
-        DataFrame.__init__(self, data, index, columns, dtype, copy)
-        if 'pressure' not in self.columns:
-            self['pressure'] = np.nan
-            warnings.warn('warning no pressure data present')
-        else:
-            self.set_index('pressure', inplace=True)
-        if 'temperature' not in self.columns:
-            self['temperature'] = np.nan
-        if 'dew_point' not in self.columns:
-            self['dew_point'] = np.nan
-        if 'wind_dir' not in self.columns:
-            self['wind_dir'] = np.nan
-        if 'wind_speed' not in self.columns:
-            self['wind_speed'] = np.nan
-
-    def create_fig_ax(figure=None):
-        if figure is None:
-            plotting.create_figure()
-        figure, axis = plotting.get_axis(figure)
-        axis.semilogy(self.pressure, self.temperature)
-        axis.semilogx(self.pressure, self.dew_point)
-        
+def create_sounding_df(data=None, index=None, columns=None, dtype=None, copy=False):
+    df = DataFrame(data, index, columns, dtype, copy)
+    if 'pressure' not in df.columns:
+        df['pressure'] = np.nan
+        warnings.warn('warning no pressure data present')
+    else:
+        df.set_index('pressure', inplace=True)
+    if 'temperature' not in df.columns:
+        df['temperature'] = np.nan
+    if 'dew_point' not in df.columns:
+        df['dew_point'] = np.nan
+    if 'wind_dir' not in df.columns:
+        df['wind_dir'] = np.nan
+    if 'wind_speed' not in df.columns:
+        df['wind_speed'] = np.nan
+    return df
 
 
 def line_generator(filename):
@@ -58,8 +47,8 @@ def line_generator(filename):
 
 def from_wyo_text(filename):
     gen = line_generator(filename)
-    sound = Sounding.from_records(list(gen), columns=['pressure', 'height', 'temperature',
-        'dew_point', 'wind_dir', 'wind_speed'])
+    sound = create_sounding_df(list(gen), columns=['pressure', 'height', 'temperature',
+                                                      'dew_point', 'wind_dir', 'wind_speed'])
     return sound
 
 

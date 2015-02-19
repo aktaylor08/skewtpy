@@ -5,18 +5,12 @@ import matplotlib.axis as maxis
 import matplotlib.spines as mspines
 import numpy as np
 
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
-
-
-
 from matplotlib.projections import register_projection
 
 __author__ = 'ataylor'
 
-
 # Taking the example skewt from matplot lib and changing it up a bit.
-
 
 # The sole purpose of this class is to look at the upper, lower, or total
 # interval as appropriate and see what parts of the tick to draw, if any.
@@ -142,16 +136,27 @@ class SkewXAxes(Axes):
 # it.
 register_projection(SkewXAxes)
 
+def create_figure():
+    return Figure()
 
-def get_axis(figure=None):
+def get_skewt_fig_axes(figure=None):
     if figure is None:
         figure = Figure()
     ax = figure.add_subplot(111, projection='skewx')
+    ax.set_yscale('log')
     ax.grid(True)
     ax.yaxis.set_major_formatter(ScalarFormatter())
-    ax.set_yticks(np.linspace(100,1000,10))
-    ax.set_ylim(1050,100)
+    ax.set_yticks(np.linspace(100, 1000, 10))
+    ax.set_ylim(1050, 100)
 
     ax.xaxis.set_major_locator(MultipleLocator(10))
-    ax.set_xlim(-50,50)
+    ax.set_xlim(-50, 50)
+    ax.set_autoscale_on(False)
     return figure, ax
+
+
+def plot_simple_sounding(sounding, fig=None):
+    fig, ax = get_skewt_fig_axes(fig)
+    ax.plot(sounding.temperature.values, sounding.index.values, c='r', linewidth=2)
+    ax.plot(sounding.dew_point.values, sounding.index.values, c='g', linewidth=2)
+    return fig, ax
