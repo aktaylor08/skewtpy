@@ -157,7 +157,9 @@ def get_axis(figure=None):
     return figure, ax
 
 if __name__ == '__main__':
-    fig, ax = get_axis()
-    ax.semilogy([100, 200, 300, 400], [2, 3, 4, 4094, ], 'r')
-    fig.savefig('work_dammit.png')
+    import matplotlib.pyplot as plt
+    fig = plt.figure()
+    fig, ax = get_axis(fig)
+    ax.semilogy([2, 3, 4, 20, 30], [100, 200, 300, 400, 1000], 'r')
+    plt.show()
 
