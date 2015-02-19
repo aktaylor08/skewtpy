@@ -155,11 +155,3 @@ def get_axis(figure=None):
     ax.xaxis.set_major_locator(MultipleLocator(10))
     ax.set_xlim(-50,50)
     return figure, ax
-
-if __name__ == '__main__':
-    import matplotlib.pyplot as plt
-    fig = plt.figure()
-    fig, ax = get_axis(fig)
-    ax.semilogy([2, 3, 4, 20, 30], [100, 200, 300, 400, 1000], 'r')
-    plt.show()
-
