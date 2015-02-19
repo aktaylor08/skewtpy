@@ -38,7 +38,7 @@ def line_generator(filename):
                 continue
             try:
                 vals = [float(x) for x in split]
-            except:
+            except ValueError:
                 continue
             if len(vals) != 11:
                 continue
